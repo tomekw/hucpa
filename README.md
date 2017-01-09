@@ -67,7 +67,21 @@ connection_pool.close
 
 ## Development
 
-TODO: Write development instructions here
+Build the Docker image:
+
+    $ docker-compose build
+
+Create services:
+
+    $ docker-compose create
+
+Run specs:
+
+    $ docker-compose run --rm app rspec spec
+
+Run console:
+
+    $ docker-compose run --rm app irb
 
 ## Contributing
 
