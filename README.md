@@ -20,7 +20,50 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Install the database driver, for PostgreSQL:
+
+```ruby
+gem "jdbc-postgres"
+```
+
+Load the the database driver if needed, for PostgreSQL:
+
+```ruby
+require "jdbc/postgres"
+Jdbc::Postgres.load_driver
+```
+
+Configure the connection pool:
+
+```ruby
+options = {
+  adapter: :postgresql,
+  database_name: "hucpa",
+  password: "hucpa",
+  server_name: "postgres",
+  username: "hucpa"
+}
+
+connection_pool = Hucpa::ConnectionPool.new(options)
+
+datasource = connection_pool.open
+
+connection = datasource.connection
+
+result_set =
+  connection
+    .create_statement
+    .execute_query("SELECT 42 AS answer")
+
+answer = (result_set.next and result_set.get_int("answer"))
+
+puts answer
+;; 42
+
+connection.close
+
+connection_pool.close
+```
 
 ## Development
 
