@@ -1,6 +1,6 @@
 # Hucpa
 
-TODO: Write description here
+A JRuby wrapper to [HikariCP](https://github.com/brettwooldridge/HikariCP) - "zero-overhead" production ready JDBC connection pool.
 
 ## Installation
 
