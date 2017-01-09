@@ -18,6 +18,10 @@ Or install it yourself as:
 
     $ gem install hucpa
 
+## Configuration options
+
+TODO: Describe configuration options
+
 ## Usage
 
 Install the database driver, for PostgreSQL:
