@@ -94,7 +94,28 @@ Close the connection pool:
 
 ```ruby
 connection_pool.close
+
 ```
+
+## Supported adapters and corresponding datasource class names
+
+| Adapter          | Datasource class name                              |
+| ---------------- | -------------------------------------------------- |
+| `derby`          | `org.apache.derby.jdbc.ClientDataSource`           |
+| `firebird`       | `org.firebirdsql.pool.FBSimpleDataSource`          |
+| `db2`            | `com.ibm.db2.jcc.DB2SimpleDataSource`              |
+| `h2`             | `org.h2.jdbcx.JdbcDataSource`                      |
+| `hsqldb`         | `org.hsqldb.jdbc.JDBCDataSource`                   |
+| `mariadb`        | `org.mariadb.jdbc.MySQLDataSource`                 |
+| `mysql`          | `com.mysql.jdbc.jdbc2.optional.MysqlDataSource`    |
+| `sqlserver_jtds` | `net.sourceforge.jtds.jdbcx.JtdsDataSource`        |
+| `sqlserver`      | `com.microsoft.sqlserver.jdbc.SQLServerDataSource` |
+| `oracle`         | `oracle.jdbc.pool.OracleDataSource`                |
+| `pgjdbc_ng`      | `com.impossibl.postgres.jdbc.PGDataSource`         |
+| `postgresql`     | `org.postgresql.ds.PGSimpleDataSource`             |
+| `fdbsql`         | `com.foundationdb.sql.jdbc.ds.FDBSimpleDataSource` |
+| `sybase`         | `com.sybase.jdbcx.SybDataSource`                   |
+| `sqlite`         | `org.sqlite.JDBC`                                  |
 
 ## Development
 
