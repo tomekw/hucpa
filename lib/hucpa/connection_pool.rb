@@ -15,6 +15,14 @@ module Hucpa
       datasource.close
     end
 
+    def with_connection(&block)
+      conn = datasource.connection
+
+      block.call(conn)
+    ensure
+      conn.close
+    end
+
     private
 
     attr_reader :hikari_config, :options

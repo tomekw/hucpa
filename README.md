@@ -49,9 +49,31 @@ options = {
 }
 
 connection_pool = Hucpa::ConnectionPool.new(options)
+```
 
+Use the connection pool with the `with_connection` API:
+
+
+```ruby
+answer = connection_pool.with_connection do |connection|
+  result_set =
+    connection
+      .create_statement
+      .execute_query("SELECT 42 AS answer")
+
+  result_set.next and result_set.get_int("answer")
+end
+
+answer
+=> 42
+```
+
+Or use the connection pool with the "classic" API:
+
+```ruby
 datasource = connection_pool.open
 
+# Explicitly obtain the connection
 connection = datasource.connection
 
 result_set =
@@ -59,13 +81,18 @@ result_set =
     .create_statement
     .execute_query("SELECT 42 AS answer")
 
-answer = (result_set.next and result_set.get_int("answer"))
+answer = result_set.next and result_set.get_int("answer")
 
-puts answer
-;; 42
-
+# Explicitly release the DB connection
 connection.close
 
+answer
+=> 42
+```
+
+Close the connection pool:
+
+```ruby
 connection_pool.close
 ```
 

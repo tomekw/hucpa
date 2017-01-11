@@ -22,20 +22,16 @@ RSpec.describe Hucpa::ConnectionPool do
     let(:expected_answer) { 42 }
 
     it "returns the Answer to the Ultimate Question of Life, the Universe, and Everything" do
-      datasource = connection_pool.open
+      answer = connection_pool.with_connection do |connection|
+        result_set =
+          connection
+            .create_statement
+            .execute_query("SELECT 42 AS answer")
 
-      connection = datasource.connection
-
-      result_set =
-        connection
-          .create_statement
-          .execute_query("SELECT 42 AS answer")
-
-      answer = (result_set.next and result_set.get_int("answer"))
+        result_set.next and result_set.get_int("answer")
+      end
 
       expect(answer).to eq expected_answer
-
-      connection.close
 
       connection_pool.close
     end
