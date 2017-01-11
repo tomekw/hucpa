@@ -44,7 +44,7 @@ describe Hucpa::Configuration do
     it "raises error" do
       expect do
         config.to_hikari_config
-      end.to raise_error(ArgumentError, "adapter is missing, adapter must be one of: derby, firebird, db2, h2, hsqldb, mariadb, mysql, sqlserver_jtds, sqlserver, oracle, pgjdbc_ng, postgresql, fdbsql, sybase, sqlite")
+      end.to raise_error(ArgumentError, "adapter is missing, adapter must be one of: db2, derby, fdbsql, firebird, h2, hsqldb, mariadb, mysql, oracle, pgjdbc_ng, postgresql, sqlite, sqlserver, sqlserver_jtds, sybase")
     end
   end
 
@@ -54,7 +54,7 @@ describe Hucpa::Configuration do
     it "raises error" do
       expect do
         config.to_hikari_config
-      end.to raise_error(ArgumentError, "adapter must be one of: derby, firebird, db2, h2, hsqldb, mariadb, mysql, sqlserver_jtds, sqlserver, oracle, pgjdbc_ng, postgresql, fdbsql, sybase, sqlite")
+      end.to raise_error(ArgumentError, "adapter must be one of: db2, derby, fdbsql, firebird, h2, hsqldb, mariadb, mysql, oracle, pgjdbc_ng, postgresql, sqlite, sqlserver, sqlserver_jtds, sybase")
     end
   end
 end
