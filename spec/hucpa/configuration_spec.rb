@@ -14,6 +14,7 @@ describe Hucpa::Configuration do
   let(:all_valid_options) do
     required_options.merge(
       auto_commit: false,
+      connection_timeout: 250,
       database_name: "hucpa",
       server_name: "postgres"
     )
@@ -31,6 +32,10 @@ describe Hucpa::Configuration do
     it "sets auto_commit" do
       expect(config.to_hikari_config.auto_commit).to eq false
     end
+
+    it "sets connection_timeout" do
+      expect(config.to_hikari_config.connection_timeout).to eq 250
+    end
   end
 
   context "when only required options provided" do
@@ -44,6 +49,20 @@ describe Hucpa::Configuration do
 
     it "is auto-commited by default" do
       expect(config.to_hikari_config.auto_commit).to eq true
+    end
+
+    it "has connection_timeout set to 30_000 by default" do
+      expect(config.to_hikari_config.connection_timeout).to eq 30_000
+    end
+  end
+
+  context "when connection_timeout too small" do
+    let(:options) { required_options.merge(connection_timeout: 249) }
+
+    it "raises error" do
+      expect do
+        config.to_hikari_config
+      end.to raise_error(ArgumentError, "connection_timeout must be greater than or equal to 250")
     end
   end
 

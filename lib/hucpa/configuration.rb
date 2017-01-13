@@ -25,6 +25,10 @@ module Hucpa
           config.auto_commit = auto_commit
         end
 
+        if !connection_timeout.nil?
+          config.connection_timeout = connection_timeout
+        end
+
         if !database_name.nil?
           config.data_source_properties["databaseName"] = database_name
         end
@@ -78,6 +82,7 @@ module Hucpa
       optional(:jdbc_url).filled(:str?)
 
       optional(:auto_commit).filled(:bool?)
+      optional(:connection_timeout).filled(:int?, gteq?: 250)
       optional(:database_name).filled(:str?)
       optional(:server_name).filled(:str?)
 
