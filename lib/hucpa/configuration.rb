@@ -12,9 +12,14 @@ module Hucpa
       raise ArgumentError.new(validation_errors) if validation.failure?
 
       HikariConfig.new.tap do |config|
-        config.data_source_class_name = ADAPTERS.fetch(adapter)
         config.password = password
         config.username = username
+
+        if !adapter.empty?
+          config.data_source_class_name = ADAPTERS.fetch(adapter)
+        elsif !jdbc_url.empty?
+          config.jdbc_url = jdbc_url
+        end
 
         if !database_name.empty?
           config.data_source_properties["databaseName"] = database_name
@@ -50,12 +55,30 @@ module Hucpa
     private_constant :ADAPTERS
 
     VALIDATION_SCHEMA = Dry::Validation.Schema do
-      required(:adapter).value(included_in?: ADAPTERS.keys)
+      configure do
+        def self.messages
+          super.merge(
+            en: {
+              errors: {
+                :"adapter/jdbc_url options" => "are invalid. Either adapter or jdbc_url has to be provided"
+              }
+            }
+          )
+        end
+      end
+
       required(:password).value(:str?)
       required(:username).value(:str?)
 
+      optional(:adapter).value(included_in?: ADAPTERS.keys)
+      optional(:jdbc_url).value(:str?)
+
       optional(:database_name).value(:str?)
       optional(:server_name).value(:str?)
+
+      rule(:"adapter/jdbc_url options" => %i[adapter jdbc_url]) do |adapter, jdbc_url|
+        adapter.filled? ^ jdbc_url.filled?
+      end
     end
     private_constant :VALIDATION_SCHEMA
 

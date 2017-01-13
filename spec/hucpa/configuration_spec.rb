@@ -44,7 +44,7 @@ describe Hucpa::Configuration do
     it "raises error" do
       expect do
         config.to_hikari_config
-      end.to raise_error(ArgumentError, "adapter is missing, adapter must be one of: db2, derby, fdbsql, firebird, h2, hsqldb, mariadb, mysql, oracle, pgjdbc_ng, postgresql, sqlite, sqlserver, sqlserver_jtds, sybase")
+      end.to raise_error(ArgumentError, "adapter/jdbc_url options are invalid. Either adapter or jdbc_url has to be provided")
     end
   end
 
@@ -55,6 +55,34 @@ describe Hucpa::Configuration do
       expect do
         config.to_hikari_config
       end.to raise_error(ArgumentError, "adapter must be one of: db2, derby, fdbsql, firebird, h2, hsqldb, mariadb, mysql, oracle, pgjdbc_ng, postgresql, sqlite, sqlserver, sqlserver_jtds, sybase")
+    end
+  end
+
+  context "when jdbc_url provided instead of adapter" do
+    let(:options) do
+      {
+        jdbc_url: "jdbc:postgresql://postgres/hucpa",
+        password: "hucpa",
+        username: "hucpa"
+      }
+    end
+
+    it "doesn't raise error" do
+      expect do
+        config.to_hikari_config
+      end.not_to raise_error
+    end
+  end
+
+  context "when both adapter and jdbc_url provided" do
+    let(:options) do
+      required_options.merge(jdbc_url: "jdbc:postgresql://postgres/hucpa")
+    end
+
+    it "raises error" do
+      expect do
+        config.to_hikari_config
+      end.to raise_error(ArgumentError, "adapter/jdbc_url options are invalid. Either adapter or jdbc_url has to be provided")
     end
   end
 end
