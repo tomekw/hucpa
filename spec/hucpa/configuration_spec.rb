@@ -1,9 +1,9 @@
 require "spec_helper"
 
 describe Hucpa::Configuration do
-  subject(:config) { described_class.new(options) }
+  subject(:hikari_config) { described_class.new(options).to_hikari_config }
 
-  let(:required_options) do
+  let(:minimal_options) do
     {
       adapter: :postgresql,
       password: "hucpa",
@@ -11,126 +11,135 @@ describe Hucpa::Configuration do
     }
   end
 
-  let(:all_valid_options) do
-    required_options.merge(
-      auto_commit: false,
-      connection_timeout: 250,
-      database_name: "hucpa",
-      server_name: "postgres"
-    )
-  end
+  describe "minimal option set" do
+    let(:options) { minimal_options }
 
-  context "when all valid options provided" do
-    let(:options) { all_valid_options }
-
-    it "doesn't raise error" do
-      expect do
-        config.to_hikari_config
-      end.not_to raise_error
+    context "when adapter configured" do
+      it "is valid" do
+        expect { hikari_config }.not_to raise_error
+      end
     end
 
-    it "sets auto_commit" do
-      expect(config.to_hikari_config.auto_commit).to eq false
-    end
+    context "when jdbc_url configured" do
+      let(:options) { minimal_options.select { |k, _| k != :adapter }.merge(jdbc_url: "jdbc:postgresql://postgres/hucpa") }
 
-    it "sets connection_timeout" do
-      expect(config.to_hikari_config.connection_timeout).to eq 250
+      it "is valid" do
+        expect { hikari_config }.not_to raise_error
+      end
     end
   end
 
-  context "when only required options provided" do
-    let(:options) { required_options }
+  describe "adapter" do
+    context "when not provided" do
+      let(:options) { minimal_options.reject { |k, _| k == :adapter } }
 
-    it "doesn't raise error" do
-      expect do
-        config.to_hikari_config
-      end.not_to raise_error
+      it "is invalid" do
+        expect do
+          hikari_config
+        end.to raise_error(ArgumentError, "adapter/jdbc_url options are invalid. Either adapter or jdbc_url must be filled")
+      end
     end
 
-    it "is auto-commited by default" do
-      expect(config.to_hikari_config.auto_commit).to eq true
-    end
+    context "when unknown" do
+      let(:options) { minimal_options.merge(adapter: :unknown) }
 
-    it "has connection_timeout set to 30_000 by default" do
-      expect(config.to_hikari_config.connection_timeout).to eq 30_000
-    end
-  end
-
-  context "when connection_timeout too small" do
-    let(:options) { required_options.merge(connection_timeout: 249) }
-
-    it "raises error" do
-      expect do
-        config.to_hikari_config
-      end.to raise_error(ArgumentError, "connection_timeout must be greater than or equal to 250")
+      it "is invalid" do
+        expect do
+          hikari_config
+        end.to raise_error(ArgumentError, "adapter must be one of: db2, derby, fdbsql, firebird, h2, hsqldb, mariadb, mysql, oracle, pgjdbc_ng, postgresql, sqlite, sqlserver, sqlserver_jtds, sybase")
+      end
     end
   end
 
-  context "when database_name empty" do
-    let(:options) { required_options.merge(database_name: "") }
+  describe "auto_commit" do
+    context "when not provided" do
+      let(:options) { minimal_options.reject { |k, _| k == :auto_commit } }
 
-    it "raises error" do
-      expect do
-        config.to_hikari_config
-      end.to raise_error(ArgumentError, "database_name must be filled")
+      it "is set to true" do
+        expect(hikari_config.auto_commit).to eq true
+      end
+    end
+
+    context "when not boolean" do
+      let(:options) { minimal_options.merge(auto_commit: 1) }
+
+      it "is invalid" do
+        expect do
+          hikari_config
+        end.to raise_error(ArgumentError, "auto_commit must be boolean")
+      end
+    end
+
+    context "when valid provided" do
+      let(:options) { minimal_options.merge(auto_commit: false) }
+
+      it "is set" do
+        expect(hikari_config.auto_commit).to eq false
+      end
     end
   end
 
-  context "when server_name empty" do
-    let(:options) { required_options.merge(server_name: "") }
+  describe "connection_timeout" do
+    context "when not provided" do
+      let(:options) { minimal_options.reject { |k, _| k == :connection_timeout } }
 
-    it "raises error" do
-      expect do
-        config.to_hikari_config
-      end.to raise_error(ArgumentError, "server_name must be filled")
+      it "is set to 30_000 ms" do
+        expect(hikari_config.connection_timeout).to eq 30_000
+      end
+    end
+
+    context "when too small" do
+      let(:options) { minimal_options.merge(connection_timeout: 249) }
+
+      it "is invalid" do
+        expect do
+          hikari_config
+        end.to raise_error(ArgumentError, "connection_timeout must be greater than or equal to 250")
+      end
+    end
+
+    context "when valid provided" do
+      let(:options) { minimal_options.merge(connection_timeout: 250) }
+
+      it "is set" do
+        expect(hikari_config.connection_timeout).to eq 250
+      end
     end
   end
 
-  context "when adapter not provided" do
-    let(:options) { required_options.select { |k, _| k != :adapter } }
+  describe "database_name" do
+    context "when empty" do
+      let(:options) { minimal_options.merge(database_name: "") }
 
-    it "raises error" do
-      expect do
-        config.to_hikari_config
-      end.to raise_error(ArgumentError, "adapter/jdbc_url options are invalid. Either adapter or jdbc_url must be filled")
+      it "is invalid" do
+        expect do
+          hikari_config
+        end.to raise_error(ArgumentError, "database_name must be filled")
+      end
     end
   end
 
-  context "when adapter invalid" do
-    let(:options) { required_options.merge(adapter: :unknown_adapter) }
+  describe "jdbc_url" do
+    context "when set together with adapter" do
+      let(:options) { minimal_options.merge(jdbc_url: "jdbc:postgresql://postgres/hucpa") }
 
-    it "raises error" do
-      expect do
-        config.to_hikari_config
-      end.to raise_error(ArgumentError, "adapter must be one of: db2, derby, fdbsql, firebird, h2, hsqldb, mariadb, mysql, oracle, pgjdbc_ng, postgresql, sqlite, sqlserver, sqlserver_jtds, sybase")
+      it "is invalid" do
+        expect do
+          hikari_config
+        end.to raise_error(ArgumentError, "adapter/jdbc_url options are invalid. Either adapter or jdbc_url must be filled")
+      end
     end
   end
 
-  context "when jdbc_url provided instead of adapter" do
-    let(:options) do
-      {
-        jdbc_url: "jdbc:postgresql://postgres/hucpa",
-        password: "hucpa",
-        username: "hucpa"
-      }
-    end
+  describe "server_name" do
+    context "when empty" do
+      let(:options) { minimal_options.merge(server_name: "") }
 
-    it "doesn't raise error" do
-      expect do
-        config.to_hikari_config
-      end.not_to raise_error
-    end
-  end
-
-  context "when both adapter and jdbc_url provided" do
-    let(:options) do
-      required_options.merge(jdbc_url: "jdbc:postgresql://postgres/hucpa")
-    end
-
-    it "raises error" do
-      expect do
-        config.to_hikari_config
-      end.to raise_error(ArgumentError, "adapter/jdbc_url options are invalid. Either adapter or jdbc_url must be filled")
+      it "is invalid" do
+        expect do
+          hikari_config
+        end.to raise_error(ArgumentError, "server_name must be filled")
+      end
     end
   end
 end
