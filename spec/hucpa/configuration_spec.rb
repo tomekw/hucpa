@@ -13,6 +13,7 @@ describe Hucpa::Configuration do
 
   let(:all_valid_options) do
     required_options.merge(
+      auto_commit: false,
       database_name: "hucpa",
       server_name: "postgres"
     )
@@ -26,6 +27,10 @@ describe Hucpa::Configuration do
         config.to_hikari_config
       end.not_to raise_error
     end
+
+    it "sets auto_commit" do
+      expect(config.to_hikari_config.auto_commit).to eq false
+    end
   end
 
   context "when only required options provided" do
@@ -35,6 +40,10 @@ describe Hucpa::Configuration do
       expect do
         config.to_hikari_config
       end.not_to raise_error
+    end
+
+    it "is auto-commited by default" do
+      expect(config.to_hikari_config.auto_commit).to eq true
     end
   end
 

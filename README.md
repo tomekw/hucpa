@@ -25,6 +25,7 @@ See [HikariCP Documentation](https://github.com/brettwooldridge/HikariCP#configu
 | Option          | Required | Default value |
 | --------------- | :------: | ------------- |
 | `adapter`       | Yes(1)   | -             |
+| `auto_commit`   | No       | `true`        |
 | `database_name` | No       | -             |
 | `jdbc_url`      | Yes(1)   | -             |
 | `password`      | Yes      | -             |

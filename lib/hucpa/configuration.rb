@@ -21,6 +21,10 @@ module Hucpa
           config.jdbc_url = jdbc_url
         end
 
+        if !auto_commit.nil?
+          config.auto_commit = auto_commit
+        end
+
         if !database_name.empty?
           config.data_source_properties["databaseName"] = database_name
         end
@@ -73,6 +77,7 @@ module Hucpa
       optional(:adapter).value(included_in?: ADAPTERS.keys)
       optional(:jdbc_url).value(:str?)
 
+      optional(:auto_commit).value(:bool?)
       optional(:database_name).value(:str?)
       optional(:server_name).value(:str?)
 
