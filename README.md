@@ -40,11 +40,19 @@ Jdbc::Postgres.load_driver
 Configure the connection pool:
 
 ```ruby
+# Using the adapter option
 options = {
   adapter: :postgresql,
   database_name: "hucpa",
   password: "hucpa",
   server_name: "postgres",
+  username: "hucpa"
+}
+
+# Using the jdbc_url option
+options = {
+  jdbc_url: "jdbc:postgresql://postgres/hucpa",
+  password: "hucpa",
   username: "hucpa"
 }
 
@@ -73,7 +81,7 @@ Or use the connection pool with the "classic" API:
 ```ruby
 datasource = connection_pool.open
 
-# Explicitly obtain the connection
+# Explicitly obtain the DB connection
 connection = datasource.connection
 
 result_set =
