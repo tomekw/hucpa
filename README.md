@@ -20,7 +20,38 @@ Or install it yourself as:
 
 ## Configuration options
 
-TODO: Describe configuration options
+See [HikariCP Documentation](https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby) for a detailed description.
+
+| Option          | Required | Default value |
+| --------------- | :------: | ------------- |
+| `adapter`       | Yes(1)   | -             |
+| `database_name` | No       | -             |
+| `jdbc_url`      | Yes(1)   | -             |
+| `password`      | Yes      | -             |
+| `server_name`   | No       | -             |
+| `username`      | Yes      | -             |
+
+`(1)` - either `adapter` or `jdbc_url` has to be provided.
+
+## Supported adapters and corresponding datasource class names
+
+| Adapter          | Datasource class name                              |
+| ---------------- | -------------------------------------------------- |
+| `db2`            | `com.ibm.db2.jcc.DB2SimpleDataSource`              |
+| `derby`          | `org.apache.derby.jdbc.ClientDataSource`           |
+| `fdbsql`         | `com.foundationdb.sql.jdbc.ds.FDBSimpleDataSource` |
+| `firebird`       | `org.firebirdsql.pool.FBSimpleDataSource`          |
+| `h2`             | `org.h2.jdbcx.JdbcDataSource`                      |
+| `hsqldb`         | `org.hsqldb.jdbc.JDBCDataSource`                   |
+| `mariadb`        | `org.mariadb.jdbc.MySQLDataSource`                 |
+| `mysql`          | `com.mysql.jdbc.jdbc2.optional.MysqlDataSource`    |
+| `oracle`         | `oracle.jdbc.pool.OracleDataSource`                |
+| `pgjdbc_ng`      | `com.impossibl.postgres.jdbc.PGDataSource`         |
+| `postgresql`     | `org.postgresql.ds.PGSimpleDataSource`             |
+| `sqlite`         | `org.sqlite.JDBC`                                  |
+| `sqlserver_jtds` | `net.sourceforge.jtds.jdbcx.JtdsDataSource`        |
+| `sqlserver`      | `com.microsoft.sqlserver.jdbc.SQLServerDataSource` |
+| `sybase`         | `com.sybase.jdbcx.SybDataSource`                   |
 
 ## Usage
 
@@ -104,26 +135,6 @@ Close the connection pool:
 connection_pool.close
 
 ```
-
-## Supported adapters and corresponding datasource class names
-
-| Adapter          | Datasource class name                              |
-| ---------------- | -------------------------------------------------- |
-| `db2`            | `com.ibm.db2.jcc.DB2SimpleDataSource`              |
-| `derby`          | `org.apache.derby.jdbc.ClientDataSource`           |
-| `fdbsql`         | `com.foundationdb.sql.jdbc.ds.FDBSimpleDataSource` |
-| `firebird`       | `org.firebirdsql.pool.FBSimpleDataSource`          |
-| `h2`             | `org.h2.jdbcx.JdbcDataSource`                      |
-| `hsqldb`         | `org.hsqldb.jdbc.JDBCDataSource`                   |
-| `mariadb`        | `org.mariadb.jdbc.MySQLDataSource`                 |
-| `mysql`          | `com.mysql.jdbc.jdbc2.optional.MysqlDataSource`    |
-| `oracle`         | `oracle.jdbc.pool.OracleDataSource`                |
-| `pgjdbc_ng`      | `com.impossibl.postgres.jdbc.PGDataSource`         |
-| `postgresql`     | `org.postgresql.ds.PGSimpleDataSource`             |
-| `sqlite`         | `org.sqlite.JDBC`                                  |
-| `sqlserver_jtds` | `net.sourceforge.jtds.jdbcx.JtdsDataSource`        |
-| `sqlserver`      | `com.microsoft.sqlserver.jdbc.SQLServerDataSource` |
-| `sybase`         | `com.sybase.jdbcx.SybDataSource`                   |
 
 ## Development
 
