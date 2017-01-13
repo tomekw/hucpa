@@ -47,13 +47,33 @@ describe Hucpa::Configuration do
     end
   end
 
+  context "when database_name empty" do
+    let(:options) { required_options.merge(database_name: "") }
+
+    it "raises error" do
+      expect do
+        config.to_hikari_config
+      end.to raise_error(ArgumentError, "database_name must be filled")
+    end
+  end
+
+  context "when server_name empty" do
+    let(:options) { required_options.merge(server_name: "") }
+
+    it "raises error" do
+      expect do
+        config.to_hikari_config
+      end.to raise_error(ArgumentError, "server_name must be filled")
+    end
+  end
+
   context "when adapter not provided" do
     let(:options) { required_options.select { |k, _| k != :adapter } }
 
     it "raises error" do
       expect do
         config.to_hikari_config
-      end.to raise_error(ArgumentError, "adapter/jdbc_url options are invalid. Either adapter or jdbc_url has to be provided")
+      end.to raise_error(ArgumentError, "adapter/jdbc_url options are invalid. Either adapter or jdbc_url must be filled")
     end
   end
 
@@ -91,7 +111,7 @@ describe Hucpa::Configuration do
     it "raises error" do
       expect do
         config.to_hikari_config
-      end.to raise_error(ArgumentError, "adapter/jdbc_url options are invalid. Either adapter or jdbc_url has to be provided")
+      end.to raise_error(ArgumentError, "adapter/jdbc_url options are invalid. Either adapter or jdbc_url must be filled")
     end
   end
 end

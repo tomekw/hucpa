@@ -15,9 +15,9 @@ module Hucpa
         config.password = password
         config.username = username
 
-        if !adapter.empty?
+        if !adapter.nil?
           config.data_source_class_name = ADAPTERS.fetch(adapter)
-        elsif !jdbc_url.empty?
+        elsif !jdbc_url.nil?
           config.jdbc_url = jdbc_url
         end
 
@@ -25,11 +25,11 @@ module Hucpa
           config.auto_commit = auto_commit
         end
 
-        if !database_name.empty?
+        if !database_name.nil?
           config.data_source_properties["databaseName"] = database_name
         end
 
-        if !server_name.empty?
+        if !server_name.nil?
           config.data_source_properties["serverName"] = server_name
         end
       end
@@ -64,22 +64,22 @@ module Hucpa
           super.merge(
             en: {
               errors: {
-                :"adapter/jdbc_url options" => "are invalid. Either adapter or jdbc_url has to be provided"
+                :"adapter/jdbc_url options" => "are invalid. Either adapter or jdbc_url must be filled"
               }
             }
           )
         end
       end
 
-      required(:password).value(:str?)
-      required(:username).value(:str?)
+      required(:password).filled(:str?)
+      required(:username).filled(:str?)
 
-      optional(:adapter).value(included_in?: ADAPTERS.keys)
-      optional(:jdbc_url).value(:str?)
+      optional(:adapter).filled(included_in?: ADAPTERS.keys)
+      optional(:jdbc_url).filled(:str?)
 
-      optional(:auto_commit).value(:bool?)
-      optional(:database_name).value(:str?)
-      optional(:server_name).value(:str?)
+      optional(:auto_commit).filled(:bool?)
+      optional(:database_name).filled(:str?)
+      optional(:server_name).filled(:str?)
 
       rule(:"adapter/jdbc_url options" => %i[adapter jdbc_url]) do |adapter, jdbc_url|
         adapter.filled? ^ jdbc_url.filled?
@@ -87,20 +87,9 @@ module Hucpa
     end
     private_constant :VALIDATION_SCHEMA
 
-    NO_VALUE = Class.new do
-      def empty?
-        true
-      end
-
-      def nil?
-        true
-      end
-    end.new
-    private_constant :NO_VALUE
-
     VALIDATION_SCHEMA.rules.keys.each do |param|
       define_method(param) do
-        options.fetch(param, NO_VALUE)
+        options.fetch(param, nil)
       end
     end
 
