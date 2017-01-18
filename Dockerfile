@@ -1,4 +1,4 @@
-FROM jruby:9.1.6.0-jre-alpine
+FROM jruby:9.1.7.0-jre-alpine
 
 RUN apk --update --no-cache add git && \
     mkdir /hucpa
