@@ -275,6 +275,18 @@ describe Hucpa::Configuration do
     end
   end
 
+  describe "pool_name" do
+    context "when empty" do
+      let(:options) { minimal_options.merge(pool_name: "") }
+
+      it "is invalid" do
+        expect do
+          hikari_config
+        end.to raise_error(ArgumentError, "pool_name must be filled")
+      end
+    end
+  end
+
   describe "server_name" do
     context "when empty" do
       let(:options) { minimal_options.merge(server_name: "") }

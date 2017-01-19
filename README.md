@@ -35,6 +35,7 @@ See [HikariCP Documentation](https://github.com/brettwooldridge/HikariCP#configu
 | `maximum_pool_size`     | No       | `10`          | Integer, greater than or equal to 1                                     |
 | `minimum_idle`          | No       | `10`          | Integer, greater than or equal to 1                                     |
 | `password`              | Yes      | -             | String                                                                  |
+| `pool_name`             | No       | -             | String                                                                  |
 | `server_name`           | No       | -             | String                                                                  |
 | `username`              | Yes      | -             | String                                                                  |
 
