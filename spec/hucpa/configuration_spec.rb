@@ -1,7 +1,11 @@
 require "spec_helper"
 
 describe Hucpa::Configuration do
-  subject(:hikari_config) { described_class.new(options).to_hikari_config }
+  subject(:hikari_config) do
+    described_class.new(options).to_hikari_config.tap do |config|
+      config.validate
+    end
+  end
 
   let(:minimal_options) do
     {
@@ -189,20 +193,20 @@ describe Hucpa::Configuration do
     end
 
     context "when too small" do
-      let(:options) { minimal_options.merge(max_lifetime: -1) }
+      let(:options) { minimal_options.merge(max_lifetime: 29_999) }
 
       it "is invalid" do
         expect do
           hikari_config
-        end.to raise_error(ArgumentError, "max_lifetime must be greater than or equal to 0")
+        end.to raise_error(ArgumentError, "max_lifetime must be equal to 0 or max_lifetime must be greater than or equal to 30000")
       end
     end
 
     context "when valid provided" do
-      let(:options) { minimal_options.merge(max_lifetime: 1) }
+      let(:options) { minimal_options.merge(max_lifetime: 30_000) }
 
       it "is set" do
-        expect(hikari_config.max_lifetime).to eq 1
+        expect(hikari_config.max_lifetime).to eq 30_000
       end
     end
 
@@ -220,8 +224,6 @@ describe Hucpa::Configuration do
       let(:options) { minimal_options.reject { |k, _| k == :maximum_pool_size } }
 
       it "is set to 10" do
-        pending "looks like HikariConfig returns invalid value here, -1 instead of 10"
-
         expect(hikari_config.maximum_pool_size).to eq 10
       end
     end
@@ -250,8 +252,6 @@ describe Hucpa::Configuration do
       let(:options) { minimal_options.reject { |k, _| k == :minimum_idle } }
 
       it "is set to 10" do
-        pending "looks like HikariConfig returns invalid value here, -1 instead of 10"
-
         expect(hikari_config.minimum_idle).to eq 10
       end
     end

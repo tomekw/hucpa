@@ -34,7 +34,7 @@ raise an issue or file a pull request.
 | `database_name`         | No       | -             | String                                                                  |
 | `idle_timeout`          | No       | `600_000`     | Integer, 0 (disabled) or greater than or equal to 10000, in miliseconds |
 | `jdbc_url`              | Yes(1)   | -             | String                                                                  |
-| `max_lifetime`          | No       | `1_800_000`   | Integer, greater than or equal to 0 (disabled), in miliseconds          |
+| `max_lifetime`          | No       | `1_800_000`   | Integer, 0 (disabled) or greater than or equal to 30000, in miliseconds |
 | `maximum_pool_size`     | No       | `10`          | Integer, greater than or equal to 1                                     |
 | `minimum_idle`          | No       | `10`          | Integer, greater than or equal to 1                                     |
 | `password`              | Yes      | -             | String                                                                  |

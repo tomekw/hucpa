@@ -117,7 +117,7 @@ module Hucpa
       optional(:connection_timeout).filled(:int?, gteq?: 250)
       optional(:database_name).filled(:str?)
       optional(:idle_timeout).filled { int? & (eql?(0) | gteq?(10_000)) }
-      optional(:max_lifetime).filled(:int?, gteq?: 0)
+      optional(:max_lifetime).filled { int? & (eql?(0) | gteq?(30_000)) }
       optional(:maximum_pool_size).filled(:int?, gteq?: 1)
       optional(:minimum_idle).filled(:int?, gteq?: 1)
       optional(:pool_name).filled(:str?)
