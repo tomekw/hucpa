@@ -43,6 +43,10 @@ module Hucpa
           config.max_lifetime = max_lifetime
         end
 
+        if !maximum_pool_size.nil?
+          config.maximum_pool_size = maximum_pool_size
+        end
+
         if !minimum_idle.nil?
           config.minimum_idle = minimum_idle
         end
@@ -105,6 +109,7 @@ module Hucpa
       optional(:database_name).filled(:str?)
       optional(:idle_timeout).filled { int? & (eql?(0) | gteq?(10_000)) }
       optional(:max_lifetime).filled(:int?, gteq?: 0)
+      optional(:maximum_pool_size).filled(:int?, gteq?: 1)
       optional(:minimum_idle).filled(:int?, gteq?: 1)
       optional(:server_name).filled(:str?)
 
