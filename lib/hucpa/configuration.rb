@@ -16,8 +16,10 @@ module Hucpa
         config.username = username
 
         if !adapter.nil?
-          config.data_source_class_name = ADAPTERS.fetch(adapter)
-        elsif !jdbc_url.nil?
+          config.data_source_class_name = data_source_class_name
+        end
+
+        if !jdbc_url.nil?
           config.jdbc_url = jdbc_url
         end
 
@@ -111,6 +113,10 @@ module Hucpa
       define_method(param) do
         options.fetch(param, nil)
       end
+    end
+
+    def data_source_class_name
+      ADAPTERS.fetch(adapter)
     end
 
     def validation
