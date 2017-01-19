@@ -167,6 +167,42 @@ describe Hucpa::Configuration do
     end
   end
 
+  describe "max_lifetime" do
+    context "when not provided" do
+      let(:options) { minimal_options.reject { |k, _| k == :max_lifetime } }
+
+      it "is set to 1_800_000 ms" do
+        expect(hikari_config.max_lifetime).to eq 1_800_000
+      end
+    end
+
+    context "when too small" do
+      let(:options) { minimal_options.merge(max_lifetime: -1) }
+
+      it "is invalid" do
+        expect do
+          hikari_config
+        end.to raise_error(ArgumentError, "max_lifetime must be greater than or equal to 0")
+      end
+    end
+
+    context "when valid provided" do
+      let(:options) { minimal_options.merge(max_lifetime: 1) }
+
+      it "is set" do
+        expect(hikari_config.max_lifetime).to eq 1
+      end
+    end
+
+    context "when 0" do
+      let(:options) { minimal_options.merge(max_lifetime: 0) }
+
+      it "is set" do
+        expect(hikari_config.max_lifetime).to eq 0
+      end
+    end
+  end
+
   describe "server_name" do
     context "when empty" do
       let(:options) { minimal_options.merge(server_name: "") }
