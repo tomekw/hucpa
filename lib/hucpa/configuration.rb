@@ -12,9 +12,6 @@ module Hucpa
       raise ArgumentError.new(validation_errors) if validation.failure?
 
       HikariConfig.new.tap do |config|
-        config.password = password
-        config.username = username
-
         if !adapter.nil?
           config.data_source_class_name = data_source_class_name
         end
@@ -51,8 +48,16 @@ module Hucpa
           config.minimum_idle = minimum_idle
         end
 
+        if !password.nil?
+          config.password = password
+        end
+
         if !pool_name.nil?
           config.pool_name = pool_name
+        end
+
+        if !username.nil?
+          config.username = username
         end
 
         if !database_name.nil?
@@ -101,22 +106,20 @@ module Hucpa
         end
       end
 
-      required(:password).filled(:str?)
-      required(:username).filled(:str?)
-
       optional(:adapter).filled(included_in?: ADAPTERS.keys)
-      optional(:jdbc_url).filled(:str?)
-
       optional(:auto_commit).filled(:bool?)
       optional(:connection_test_query).filled(:str?)
       optional(:connection_timeout).filled(:int?, gteq?: 250)
       optional(:database_name).filled(:str?)
       optional(:idle_timeout).filled { int? & (eql?(0) | gteq?(10_000)) }
+      optional(:jdbc_url).filled(:str?)
       optional(:max_lifetime).filled(:int?, gteq?: 0)
       optional(:maximum_pool_size).filled(:int?, gteq?: 1)
       optional(:minimum_idle).filled(:int?, gteq?: 1)
+      optional(:password).filled(:str?)
       optional(:pool_name).filled(:str?)
       optional(:server_name).filled(:str?)
+      optional(:username).filled(:str?)
 
       rule(:"adapter/jdbc_url options" => %i[adapter jdbc_url]) do |adapter, jdbc_url|
         adapter.filled? ^ jdbc_url.filled?

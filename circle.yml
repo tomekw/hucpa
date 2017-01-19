@@ -1,0 +1,16 @@
+machine:
+  services:
+    - docker
+
+database:
+  override:
+    - psql -U ubuntu -c "CREATE USER hucpa WITH PASSWORD 'hucpa'"
+    - psql -U ubuntu -c "CREATE DATABASE hucpa OWNER hucpa"
+
+dependencies:
+  override:
+    - docker build --rm=false -t tomekw/hucpa .
+
+test:
+  override:
+    - docker run --net=host --env DATABASE_HOST=localhost --rm tomekw/hucpa rspec spec

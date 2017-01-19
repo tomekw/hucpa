@@ -5,9 +5,7 @@ describe Hucpa::Configuration do
 
   let(:minimal_options) do
     {
-      adapter: :postgresql,
-      password: "hucpa",
-      username: "hucpa"
+      adapter: :postgresql
     }
   end
 
@@ -275,6 +273,18 @@ describe Hucpa::Configuration do
     end
   end
 
+  describe "password" do
+    context "when empty" do
+      let(:options) { minimal_options.merge(password: "") }
+
+      it "is invalid" do
+        expect do
+          hikari_config
+        end.to raise_error(ArgumentError, "password must be filled")
+      end
+    end
+  end
+
   describe "pool_name" do
     context "when empty" do
       let(:options) { minimal_options.merge(pool_name: "") }
@@ -295,6 +305,18 @@ describe Hucpa::Configuration do
         expect do
           hikari_config
         end.to raise_error(ArgumentError, "server_name must be filled")
+      end
+    end
+  end
+
+  describe "username" do
+    context "when empty" do
+      let(:options) { minimal_options.merge(username: "") }
+
+      it "is invalid" do
+        expect do
+          hikari_config
+        end.to raise_error(ArgumentError, "username must be filled")
       end
     end
   end

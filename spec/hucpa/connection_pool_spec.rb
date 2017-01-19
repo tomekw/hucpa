@@ -3,6 +3,8 @@ require "spec_helper"
 RSpec.describe Hucpa::ConnectionPool do
   subject(:connection_pool) { described_class.new(options) }
 
+  let(:database_host) { ENV.fetch("DATABASE_HOST", "postgres") }
+
   before(:all) do
     require "jdbc/postgres"
     Jdbc::Postgres.load_driver
@@ -14,7 +16,7 @@ RSpec.describe Hucpa::ConnectionPool do
         adapter: :postgresql,
         database_name: "hucpa",
         password: "hucpa",
-        server_name: "postgres",
+        server_name: database_host,
         username: "hucpa"
       }
     end
@@ -40,10 +42,8 @@ RSpec.describe Hucpa::ConnectionPool do
   context "when valid jdbc_url options provided" do
     let(:options) do
       {
-        jdbc_url: "jdbc:postgresql://postgres/hucpa",
-        database_name: "hucpa",
+        jdbc_url: "jdbc:postgresql://#{database_host}/hucpa",
         password: "hucpa",
-        server_name: "postgres",
         username: "hucpa"
       }
     end
