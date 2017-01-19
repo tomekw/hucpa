@@ -32,6 +32,7 @@ See [HikariCP Documentation](https://github.com/brettwooldridge/HikariCP#configu
 | `idle_timeout`          | No       | `600_000`     | Integer, 0 (disabled) or greater than or equal to 10000, in miliseconds |
 | `jdbc_url`              | Yes(1)   | -             | String                                                                  |
 | `max_lifetime`          | No       | `1_800_000`   | Integer, greater than or equal to 0 (disabled), in miliseconds          |
+| `minimum_idle`          | No       | `10`          | Integer, greater than or equal to 1                                     |
 | `password`              | Yes      | -             | String                                                                  |
 | `server_name`           | No       | -             | String                                                                  |
 | `username`              | Yes      | -             | String                                                                  |

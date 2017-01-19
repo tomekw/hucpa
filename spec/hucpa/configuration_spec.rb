@@ -215,6 +215,36 @@ describe Hucpa::Configuration do
     end
   end
 
+  describe "minimum_idle" do
+    context "when not provided" do
+      let(:options) { minimal_options.reject { |k, _| k == :minimum_idle } }
+
+      it "is set to 10" do
+        pending "looks like HikariConfig returns invalid value here, -1 instead of 10"
+
+        expect(hikari_config.minimum_idle).to eq 10
+      end
+    end
+
+    context "when too small" do
+      let(:options) { minimal_options.merge(minimum_idle: 0) }
+
+      it "is invalid" do
+        expect do
+          hikari_config
+        end.to raise_error(ArgumentError, "minimum_idle must be greater than or equal to 1")
+      end
+    end
+
+    context "when valid provided" do
+      let(:options) { minimal_options.merge(minimum_idle: 11) }
+
+      it "is set" do
+        expect(hikari_config.minimum_idle).to eq 11
+      end
+    end
+  end
+
   describe "server_name" do
     context "when empty" do
       let(:options) { minimal_options.merge(server_name: "") }

@@ -43,6 +43,10 @@ module Hucpa
           config.max_lifetime = max_lifetime
         end
 
+        if !minimum_idle.nil?
+          config.minimum_idle = minimum_idle
+        end
+
         if !database_name.nil?
           config.data_source_properties["databaseName"] = database_name
         end
@@ -101,6 +105,7 @@ module Hucpa
       optional(:database_name).filled(:str?)
       optional(:idle_timeout).filled { int? & (eql?(0) | gteq?(10_000)) }
       optional(:max_lifetime).filled(:int?, gteq?: 0)
+      optional(:minimum_idle).filled(:int?, gteq?: 1)
       optional(:server_name).filled(:str?)
 
       rule(:"adapter/jdbc_url options" => %i[adapter jdbc_url]) do |adapter, jdbc_url|
