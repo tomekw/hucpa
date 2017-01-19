@@ -1,6 +1,7 @@
 # Hucpa
 
 A JRuby wrapper to [HikariCP](https://github.com/brettwooldridge/HikariCP) - "zero-overhead" production ready JDBC connection pool.
+This is / will be a part of a bigger effort, like a dedicated library to use SQL and / or ActiveRecord integration.
 
 ## Installation
 
@@ -21,6 +22,8 @@ Or install it yourself as:
 ## Configuration options
 
 See [HikariCP Documentation](https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby) for a detailed description.
+Not all HikariCP-defined configuration options are currently supported. To add support for infrequently used options please
+raise an issue or file a pull request.
 
 | Option                  | Required | Default value | Notes                                                                   |
 | ----------------------- | :------: | ------------- | ----------------------------------------------------------------------- |
