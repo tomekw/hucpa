@@ -25,6 +25,10 @@ module Hucpa
           config.auto_commit = auto_commit
         end
 
+        if !connection_test_query.nil?
+          config.connection_test_query = connection_test_query
+        end
+
         if !connection_timeout.nil?
           config.connection_timeout = connection_timeout
         end
@@ -90,6 +94,7 @@ module Hucpa
       optional(:jdbc_url).filled(:str?)
 
       optional(:auto_commit).filled(:bool?)
+      optional(:connection_test_query).filled(:str?)
       optional(:connection_timeout).filled(:int?, gteq?: 250)
       optional(:database_name).filled(:str?)
       optional(:idle_timeout).filled { int? & (eql?(0) | gteq?(10_000)) }

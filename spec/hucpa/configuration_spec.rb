@@ -79,6 +79,18 @@ describe Hucpa::Configuration do
     end
   end
 
+  describe "connection_test_query" do
+    context "when empty" do
+      let(:options) { minimal_options.merge(connection_test_query: "") }
+
+      it "is invalid" do
+        expect do
+          hikari_config
+        end.to raise_error(ArgumentError, "connection_test_query must be filled")
+      end
+    end
+  end
+
   describe "connection_timeout" do
     context "when not provided" do
       let(:options) { minimal_options.reject { |k, _| k == :connection_timeout } }
