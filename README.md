@@ -22,16 +22,17 @@ Or install it yourself as:
 
 See [HikariCP Documentation](https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby) for a detailed description.
 
-| Option               | Required | Default value | Notes                                                 |
-| -------------------- | :------: | ------------- | ----------------------------------------------------- |
-| `adapter`            | Yes(1)   | -             | Symbol                                                |
-| `auto_commit`        | No       | `true`        | Boolean                                               |
-| `connection_timeout` | No       | `30_000`      | Integer, greater than or equal to 250, in miliseconds |
-| `database_name`      | No       | -             | String                                                |
-| `jdbc_url`           | Yes(1)   | -             | String                                                |
-| `password`           | Yes      | -             | String                                                |
-| `server_name`        | No       | -             | String                                                |
-| `username`           | Yes      | -             | String                                                |
+| Option               | Required | Default value | Notes                                                                   |
+| -------------------- | :------: | ------------- | ----------------------------------------------------------------------- |
+| `adapter`            | Yes(1)   | -             | Symbol                                                                  |
+| `auto_commit`        | No       | `true`        | Boolean                                                                 |
+| `connection_timeout` | No       | `30_000`      | Integer, greater than or equal to 250, in miliseconds                   |
+| `database_name`      | No       | -             | String                                                                  |
+| `idle_timeout`       | No       | `600_000`     | Integer, 0 (disabled) or greater than or equal to 10000, in miliseconds |
+| `jdbc_url`           | Yes(1)   | -             | String                                                                  |
+| `password`           | Yes      | -             | String                                                                  |
+| `server_name`        | No       | -             | String                                                                  |
+| `username`           | Yes      | -             | String                                                                  |
 
 `(1)` - either `adapter` or `jdbc_url` has to be provided.
 

@@ -119,6 +119,42 @@ describe Hucpa::Configuration do
     end
   end
 
+  describe "idle_timeout" do
+    context "when not provided" do
+      let(:options) { minimal_options.reject { |k, _| k == :idle_timeout } }
+
+      it "is set to 600_000 ms" do
+        expect(hikari_config.idle_timeout).to eq 600_000
+      end
+    end
+
+    context "when too small" do
+      let(:options) { minimal_options.merge(idle_timeout: 9_999) }
+
+      it "is invalid" do
+        expect do
+          hikari_config
+        end.to raise_error(ArgumentError, "idle_timeout must be equal to 0 or idle_timeout must be greater than or equal to 10000")
+      end
+    end
+
+    context "when valid provided" do
+      let(:options) { minimal_options.merge(idle_timeout: 10_001) }
+
+      it "is set" do
+        expect(hikari_config.idle_timeout).to eq 10_001
+      end
+    end
+
+    context "when 0" do
+      let(:options) { minimal_options.merge(idle_timeout: 0) }
+
+      it "is set" do
+        expect(hikari_config.idle_timeout).to eq 0
+      end
+    end
+  end
+
   describe "jdbc_url" do
     context "when set together with adapter" do
       let(:options) { minimal_options.merge(jdbc_url: "jdbc:postgresql://postgres/hucpa") }
