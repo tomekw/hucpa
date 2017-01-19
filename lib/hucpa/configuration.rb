@@ -11,61 +11,14 @@ module Hucpa
     def to_hikari_config
       raise ArgumentError.new(validation_errors) if validation.failure?
 
-      HikariConfig.new.tap do |config|
-        if !password.nil?
-          config.password = password
-        end
+      HikariConfiguration.new.tap do |config|
+        CONFIGURATION_OPTIONS.each do |option|
+          option_setter = "#{option}="
+          option_value = send(option)
 
-        if !username.nil?
-          config.username = username
-        end
-
-        if !adapter.nil?
-          config.data_source_class_name = data_source_class_name
-        end
-
-        if !jdbc_url.nil?
-          config.jdbc_url = jdbc_url
-        end
-
-        if !auto_commit.nil?
-          config.auto_commit = auto_commit
-        end
-
-        if !connection_test_query.nil?
-          config.connection_test_query = connection_test_query
-        end
-
-        if !connection_timeout.nil?
-          config.connection_timeout = connection_timeout
-        end
-
-        if !idle_timeout.nil?
-          config.idle_timeout = idle_timeout
-        end
-
-        if !max_lifetime.nil?
-          config.max_lifetime = max_lifetime
-        end
-
-        if !maximum_pool_size.nil?
-          config.maximum_pool_size = maximum_pool_size
-        end
-
-        if !minimum_idle.nil?
-          config.minimum_idle = minimum_idle
-        end
-
-        if !pool_name.nil?
-          config.pool_name = pool_name
-        end
-
-        if !database_name.nil?
-          config.data_source_properties["databaseName"] = database_name
-        end
-
-        if !server_name.nil?
-          config.data_source_properties["serverName"] = server_name
+          if config.respond_to?(option_setter) && !option_value.nil?
+            config.public_send(option_setter, option_value)
+          end
         end
       end
     end
@@ -129,14 +82,28 @@ module Hucpa
     end
     private_constant :VALIDATION_SCHEMA
 
-    VALIDATION_SCHEMA.rules.keys.each do |param|
+    CONFIGURATION_OPTIONS = VALIDATION_SCHEMA.rules.keys
+    private_constant :CONFIGURATION_OPTIONS
+
+    class HikariConfiguration < HikariConfig
+      def adapter=(value)
+        self.data_source_class_name = ADAPTERS.fetch(value)
+      end
+
+      def database=(value)
+        self.data_source_properties["databaseName"] = value
+      end
+
+      def server_name=(value)
+        self.data_source_properties["serverName"] = value
+      end
+    end
+    private_constant :HikariConfiguration
+
+    CONFIGURATION_OPTIONS.each do |param|
       define_method(param) do
         options.fetch(param, nil)
       end
-    end
-
-    def data_source_class_name
-      ADAPTERS.fetch(adapter)
     end
 
     def validation
