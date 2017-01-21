@@ -1,5 +1,7 @@
 # Hucpa
 
+[![Code Climate](https://codeclimate.com/github/tomekw/hucpa/badges/gpa.svg)](https://codeclimate.com/github/tomekw/hucpa) [![CircleCI](https://circleci.com/gh/tomekw/hucpa.svg?style=svg)](https://circleci.com/gh/tomekw/hucpa)
+
 A JRuby wrapper to [HikariCP](https://github.com/brettwooldridge/HikariCP) - "zero-overhead" production ready JDBC connection pool.
 This is / will be a part of a bigger effort, like a dedicated library to use SQL and / or ActiveRecord integration.
 

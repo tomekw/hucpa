@@ -7,6 +7,6 @@ WORKDIR /hucpa
 
 COPY hucpa.gemspec Gemfile Gemfile.lock ./
 
-RUN gem install bundler && bundle
+RUN gem install bundler -v 1.13.7 && bundle
 
 COPY . ./
