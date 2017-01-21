@@ -8,6 +8,7 @@ services:
       JRUBY_OPTS: --debug
     volumes:
       - .:/hucpa
+      - ${HOME}/.ssh:/root/.ssh:ro
   postgres:
     environment:
       POSTGRES_USER: hucpa

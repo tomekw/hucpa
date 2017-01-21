@@ -1,6 +1,6 @@
 FROM jruby:9.1.7.0-jre-alpine
 
-RUN apk --update --no-cache add git && \
+RUN apk --update --no-cache add git openssh && \
     mkdir /hucpa
 
 WORKDIR /hucpa
