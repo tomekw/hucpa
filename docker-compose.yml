@@ -4,6 +4,8 @@ services:
     build: .
     depends_on:
       - postgres
+    environment:
+      JRUBY_OPTS: --debug
     volumes:
       - .:/hucpa
   postgres:
