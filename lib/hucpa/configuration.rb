@@ -9,7 +9,7 @@ module Hucpa
     end
 
     def to_hikari_config
-      raise ArgumentError.new(validation_errors) if validation.failure?
+      fail ArgumentError, validation_errors if validation.failure?
 
       HikariConfiguration.new.tap do |config|
         CONFIGURATION_OPTIONS.each do |option|
@@ -43,7 +43,7 @@ module Hucpa
       sqlserver: "com.microsoft.sqlserver.jdbc.SQLServerDataSource",
       sqlserver_jtds: "net.sourceforge.jtds.jdbcx.JtdsDataSource",
       sybase: "com.sybase.jdbcx.SybDataSource"
-    }
+    }.freeze
     private_constant :ADAPTERS
 
     VALIDATION_SCHEMA = Dry::Validation.Schema do
@@ -52,7 +52,7 @@ module Hucpa
           super.merge(
             en: {
               errors: {
-                :"adapter/jdbc_url options" => "are invalid. Either adapter or jdbc_url must be filled"
+                "adapter/jdbc_url options": "are invalid. Either adapter or jdbc_url must be filled"
               }
             }
           )
@@ -76,7 +76,7 @@ module Hucpa
       optional(:pool_name).filled(:str?)
       optional(:server_name).filled(:str?)
 
-      rule(:"adapter/jdbc_url options" => %i[adapter jdbc_url]) do |adapter, jdbc_url|
+      rule("adapter/jdbc_url options": %i[adapter jdbc_url]) do |adapter, jdbc_url|
         adapter.filled? ^ jdbc_url.filled?
       end
     end

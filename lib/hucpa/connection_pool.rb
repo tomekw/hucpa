@@ -15,10 +15,10 @@ module Hucpa
       datasource.close
     end
 
-    def with_connection(&block)
+    def with_connection
       conn = datasource.connection
 
-      block.call(conn)
+      yield conn
     ensure
       conn.close
     end

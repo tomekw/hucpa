@@ -1,0 +1,42 @@
+AllCops:
+  TargetRubyVersion: 2.3
+
+Documentation:
+  Enabled: false
+
+Metrics/BlockLength:
+  Max: 32
+  Exclude:
+    - "spec/**/*.rb"
+
+Metrics/LineLength:
+  Max: 120
+
+Style/AndOr:
+  EnforcedStyle: conditionals
+
+Style/Encoding:
+  EnforcedStyle: when_needed
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/IndentHash:
+  Enabled: false
+
+Style/PercentLiteralDelimiters:
+  PreferredDelimiters:
+    "%i": "[]"
+    "%I": "[]"
+    "%w": "[]"
+    "%W": "[]"
+
+Style/RedundantSelf:
+  Enabled: false
+
+Style/SignalException:
+  Enabled: true
+  EnforcedStyle: semantic
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes

@@ -13,4 +13,5 @@ dependencies:
 
 test:
   override:
+    - docker run --net=host --env DATABASE_HOST=localhost --rm tomekw/hucpa rubocop
     - docker run --net=host --env DATABASE_HOST=localhost --rm tomekw/hucpa rspec spec

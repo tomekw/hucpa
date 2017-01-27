@@ -7,6 +7,7 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
+    ast (2.3.0)
     concurrent-ruby (1.0.4-java)
     diff-lcs (1.3)
     docile (1.1.5)
@@ -40,6 +41,10 @@ GEM
     inflecto (0.0.2)
     jdbc-postgres (9.4.1206)
     json (2.0.3-java)
+    parser (2.3.3.1)
+      ast (~> 2.2)
+    powerpack (0.1.1)
+    rainbow (2.2.1)
     rake (12.0.0)
     rspec (3.5.0)
       rspec-core (~> 3.5.0)
@@ -54,11 +59,19 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.5.0)
     rspec-support (3.5.0)
+    rubocop (0.47.1)
+      parser (>= 2.3.3.1, < 3.0)
+      powerpack (~> 0.1)
+      rainbow (>= 1.99.1, < 3.0)
+      ruby-progressbar (~> 1.7)
+      unicode-display_width (~> 1.0, >= 1.0.1)
+    ruby-progressbar (1.8.1)
     simplecov (0.13.0)
       docile (~> 1.1.0)
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.0)
+    unicode-display_width (1.1.3)
 
 PLATFORMS
   java
@@ -69,6 +82,7 @@ DEPENDENCIES
   jdbc-postgres (~> 9.4)
   rake (~> 12.0)
   rspec (~> 3.5)
+  rubocop (~> 0)
   simplecov (~> 0)
 
 BUNDLED WITH

@@ -1,11 +1,7 @@
 require "spec_helper"
 
 describe Hucpa::Configuration do
-  subject(:hikari_config) do
-    described_class.new(options).to_hikari_config.tap do |config|
-      config.validate
-    end
-  end
+  subject(:hikari_config) { described_class.new(options).to_hikari_config.tap(&:validate) }
 
   let(:minimal_options) do
     {
@@ -25,7 +21,9 @@ describe Hucpa::Configuration do
     end
 
     context "when jdbc_url configured" do
-      let(:options) { minimal_options.select { |k, _| k != :adapter }.merge(jdbc_url: "jdbc:postgresql://postgres/hucpa") }
+      let(:options) do
+        minimal_options.select { |k, _| k != :adapter }.merge(jdbc_url: "jdbc:postgresql://postgres/hucpa")
+      end
 
       it "is valid" do
         expect { hikari_config }.not_to raise_error
@@ -36,21 +34,26 @@ describe Hucpa::Configuration do
   describe "adapter" do
     context "when not provided" do
       let(:options) { minimal_options.reject { |k, _| k == :adapter } }
+      let(:error_message) { "adapter/jdbc_url options are invalid. Either adapter or jdbc_url must be filled" }
 
       it "is invalid" do
         expect do
           hikari_config
-        end.to raise_error(ArgumentError, "adapter/jdbc_url options are invalid. Either adapter or jdbc_url must be filled")
+        end.to raise_error(ArgumentError, error_message)
       end
     end
 
     context "when unknown" do
       let(:options) { minimal_options.merge(adapter: :unknown) }
+      let(:error_message) do
+        %(adapter must be one of: db2, derby, fdbsql, firebird, h2, hsqldb, mariadb, mysql,
+          oracle, pgjdbc_ng, postgresql, sqlite, sqlserver, sqlserver_jtds, sybase).gsub(/[[:space:]]+/, " ").strip
+      end
 
       it "is invalid" do
         expect do
           hikari_config
-        end.to raise_error(ArgumentError, "adapter must be one of: db2, derby, fdbsql, firebird, h2, hsqldb, mariadb, mysql, oracle, pgjdbc_ng, postgresql, sqlite, sqlserver, sqlserver_jtds, sybase")
+        end.to raise_error(ArgumentError, error_message)
       end
     end
   end
@@ -146,11 +149,12 @@ describe Hucpa::Configuration do
 
     context "when too small" do
       let(:options) { minimal_options.merge(idle_timeout: 9_999) }
+      let(:error_message) { "idle_timeout must be equal to 0 or idle_timeout must be greater than or equal to 10000" }
 
       it "is invalid" do
         expect do
           hikari_config
-        end.to raise_error(ArgumentError, "idle_timeout must be equal to 0 or idle_timeout must be greater than or equal to 10000")
+        end.to raise_error(ArgumentError, error_message)
       end
     end
 
@@ -174,11 +178,12 @@ describe Hucpa::Configuration do
   describe "jdbc_url" do
     context "when set together with adapter" do
       let(:options) { minimal_options.merge(jdbc_url: "jdbc:postgresql://postgres/hucpa") }
+      let(:error_message) { "adapter/jdbc_url options are invalid. Either adapter or jdbc_url must be filled" }
 
       it "is invalid" do
         expect do
           hikari_config
-        end.to raise_error(ArgumentError, "adapter/jdbc_url options are invalid. Either adapter or jdbc_url must be filled")
+        end.to raise_error(ArgumentError, error_message)
       end
     end
   end
@@ -194,11 +199,12 @@ describe Hucpa::Configuration do
 
     context "when too small" do
       let(:options) { minimal_options.merge(max_lifetime: 29_999) }
+      let(:error_message) { "max_lifetime must be equal to 0 or max_lifetime must be greater than or equal to 30000" }
 
       it "is invalid" do
         expect do
           hikari_config
-        end.to raise_error(ArgumentError, "max_lifetime must be equal to 0 or max_lifetime must be greater than or equal to 30000")
+        end.to raise_error(ArgumentError, error_message)
       end
     end
 

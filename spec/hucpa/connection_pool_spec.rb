@@ -25,10 +25,7 @@ RSpec.describe Hucpa::ConnectionPool do
 
     it "returns the Answer to the Ultimate Question of Life, the Universe, and Everything" do
       answer = connection_pool.with_connection do |connection|
-        result_set =
-          connection
-            .create_statement
-            .execute_query("SELECT 42 AS answer")
+        result_set = connection.create_statement.execute_query("SELECT 42 AS answer")
 
         result_set.next and result_set.get_int("answer")
       end
@@ -52,10 +49,7 @@ RSpec.describe Hucpa::ConnectionPool do
 
     it "returns the Answer to the Ultimate Question of Life, the Universe, and Everything" do
       answer = connection_pool.with_connection do |connection|
-        result_set =
-          connection
-            .create_statement
-            .execute_query("SELECT 42 AS answer")
+        result_set = connection.create_statement.execute_query("SELECT 42 AS answer")
 
         result_set.next and result_set.get_int("answer")
       end
