@@ -16,7 +16,7 @@ Gem::Specification.new do |spec|
   spec.files = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})
   end
-  spec.require_paths = %w[lib vendor]
+  spec.require_paths = %w[lib]
 
   spec.add_dependency "dry-validation", "~> 0.10"
 

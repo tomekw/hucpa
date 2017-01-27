@@ -1,4 +1,4 @@
-Dir["vendor/*"].each { |f| require File.join(Dir.pwd, f) }
+Dir[File.expand_path("..", __FILE__) + "/*.jar"].each { |f| require f }
 
 require "hucpa/configuration"
 require "hucpa/connection_pool"

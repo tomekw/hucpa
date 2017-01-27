@@ -1,9 +1,9 @@
 require "dry-validation"
 
-import com.zaxxer.hikari.HikariConfig
-
 module Hucpa
   class Configuration
+    java_import com.zaxxer.hikari.HikariConfig
+
     def initialize(options)
       @options = options
     end

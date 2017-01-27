@@ -1,7 +1,7 @@
-import com.zaxxer.hikari.HikariDataSource
-
 module Hucpa
   class ConnectionPool
+    java_import com.zaxxer.hikari.HikariDataSource
+
     def initialize(options)
       @options = options
       @hikari_config = Configuration.new(options).to_hikari_config
