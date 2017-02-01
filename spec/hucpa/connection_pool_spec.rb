@@ -34,6 +34,20 @@ RSpec.describe Hucpa::ConnectionPool do
 
       connection_pool.close
     end
+
+    it "allows to obtain the DB connection explicitly" do
+      connection = connection_pool.open.connection
+
+      result_set = connection.create_statement.execute_query("SELECT 42 AS answer")
+
+      answer = (result_set.next and result_set.get_int("answer"))
+
+      expect(answer).to eq expected_answer
+
+      connection.close
+
+      connection_pool.close
+    end
   end
 
   context "when valid jdbc_url options provided" do
