@@ -90,7 +90,7 @@ module Hucpa
         self.data_source_class_name = ADAPTERS.fetch(value)
       end
 
-      def database=(value)
+      def database_name=(value)
         self.data_source_properties["databaseName"] = value
       end
 
