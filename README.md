@@ -150,7 +150,6 @@ Close the connection pool:
 
 ```ruby
 connection_pool.close
-
 ```
 
 ## Development
