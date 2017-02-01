@@ -1,3 +1,7 @@
+## 0.2.2
+
+* fixed setting `database_name` configuration option
+
 ## 0.2.1
 
 * fixed importing `HikariCP` jars
