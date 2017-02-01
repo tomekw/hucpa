@@ -9,6 +9,7 @@ services:
     volumes:
       - .:/hucpa
       - ${HOME}/.ssh:/root/.ssh:ro
+      - ${HOME}/.gem:/root/.gem:rw
   postgres:
     environment:
       POSTGRES_USER: hucpa
