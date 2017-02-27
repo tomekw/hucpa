@@ -1,3 +1,7 @@
+## 0.2.3
+
+* do not include `slf4j-nop` jar
+
 ## 0.2.2
 
 * fixed setting `database_name` configuration option

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    hucpa (0.2.2-java)
+    hucpa (0.2.3-java)
       dry-validation (~> 0.10)
 
 GEM
