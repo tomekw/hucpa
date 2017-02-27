@@ -1,3 +1,7 @@
+## 0.2.4
+
+* bring back updated `slf4j-nop` jar
+
 ## 0.2.3
 
 * do not include `slf4j-nop` jar
