@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.homepage = "https://github.com/tomekw/hucpa"
   spec.license = "MIT"
 
-  spec.platform = "jruby"
+  spec.platform = "java"
 
   spec.files = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})

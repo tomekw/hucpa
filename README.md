@@ -5,7 +5,7 @@
 A JRuby wrapper to [HikariCP](https://github.com/brettwooldridge/HikariCP) - "zero-overhead" production ready JDBC connection pool.
 This is / will be a part of a bigger effort, like a dedicated library to use SQL and / or ActiveRecord integration.
 
-Please note the project support only JRuby (tested with 9.1.7.0+) on Java 8.
+Please note the project support only JRuby (tested with 9.1.8.0+) on Java 8.
 
 The public API is subject to change before version `1.0.0`.
 

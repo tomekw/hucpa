@@ -1,3 +1,7 @@
+## unreleased
+
+* upgraded `HikariCP` to `2.6.1`
+
 ## 0.2.4
 
 * bring back updated `slf4j-nop` jar
